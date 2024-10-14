@@ -4,7 +4,6 @@ import dev.robocode.tankroyale.botapi.events.*;
 public class MyFirstBot extends Bot {
     
     int turnDirection = 1;
-    
     // The main method starts our bot
     public static void main(String[] args) {
         new MyFirstBot().start();
@@ -25,23 +24,30 @@ public class MyFirstBot extends Bot {
         setScanColor(Color.RED);
         setBulletColor(Color.CYAN);
 
+
         // Repeat while the bot is running
         while (isRunning()) {
-            turnGunRight(20); // Smaller turns for faster scanning
+            while (isRunning()) {
+                turnLeft(5 * turnDirection);
+            }
+
             if (getX() < 50 || getY() < 50 || getX() > getArenaWidth() - 50 || getY() > getArenaHeight() - 50) {
                 // 벽에 가까워지면 회피
                 turnLeft(90);
                 forward(100);
-            } else {
+            } 
+            
+            else {
                 forward(Math.random() * 200 + 50);
-                turnGunRight(20); // Smaller, continuous gun rotation for faster scans
+                turnGunRight(360);
                 back(Math.random() * 200 + 50);
-                turnGunRight(20); // Keep scanning while moving
+                turnGunRight(360);
             }
         }
-    }
 
-    // We scanned another bot -> go ram it
+    }
+    
+        // We scanned another bot -> go ram it
     @Override
     public void onScannedBot(ScannedBotEvent e) {
         turnToFaceTarget(e.getX(), e.getY());
@@ -49,7 +55,7 @@ public class MyFirstBot extends Bot {
         var distance = distanceTo(e.getX(), e.getY());
         forward(distance + 5);
 
-        rescan(); // Immediately scan again after ramming
+        rescan(); // Might want to move forward again!
     }
 
     // We have hit another bot -> turn to face bot, fire hard, and ram it again!
