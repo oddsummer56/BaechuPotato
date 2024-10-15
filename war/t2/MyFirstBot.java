@@ -2,7 +2,7 @@ import dev.robocode.tankroyale.botapi.*;
 import dev.robocode.tankroyale.botapi.events.*;
 
 public class MyFirstBot extends Bot {
-    
+
     int turnDirection = 1;
     // The main method starts our bot
     public static void main(String[] args) {
@@ -28,15 +28,15 @@ public class MyFirstBot extends Bot {
         // Repeat while the bot is running
         while (isRunning()) {
             while (isRunning()) {
-                turnLeft(5 * turnDirection);
+                turnLeft(10 * turnDirection);
             }
 
             if (getX() < 50 || getY() < 50 || getX() > getArenaWidth() - 50 || getY() > getArenaHeight() - 50) {
                 // 벽에 가까워지면 회피
                 turnLeft(90);
                 forward(100);
-            } 
-            
+            }
+
             else {
                 forward(Math.random() * 200 + 50);
                 turnGunRight(360);
@@ -46,7 +46,7 @@ public class MyFirstBot extends Bot {
         }
 
     }
-    
+
         // We scanned another bot -> go ram it
     @Override
     public void onScannedBot(ScannedBotEvent e) {
@@ -76,12 +76,15 @@ public class MyFirstBot extends Bot {
         } else if (e.getEnergy() > .4) {
             fire(.1);
         }
+
         forward(40); // Ram him again!
     }
 
     // Method that turns the bot to face the target at coordinate x,y, but also sets the
     // default turn direction used if no bot is being scanned within in the run() method.
     private void turnToFaceTarget(double x, double y) {
+        setTargetSpeed(8);
+
         var bearing = bearingTo(x, y);
         if (bearing >= 0) {
             turnDirection = 1;
@@ -91,3 +94,4 @@ public class MyFirstBot extends Bot {
         turnLeft(bearing);
     }
 }
+
